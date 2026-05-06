@@ -946,14 +946,16 @@ jobs:
         run: |
           echo "当前的缓存列表"
           gh cache list
-          gh cache delete "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-last-build-sha" \
-            --repo ${{ github.repository }}
-          gh cache delete "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-last-checked-sha" \
-            --repo ${{ github.repository }}
-          gh cache delete "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-disk-growth" \
-            --repo ${{ github.repository }}
-          gh cache delete "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-ccache" \
-            --repo ${{ github.repository }}
+
+          for key in \
+            "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-last-build-sha" \
+            "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-last-checked-sha" \
+            "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-disk-growth" \
+            "${{ env.REPO_PATH }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_MODEL }}-ccache"
+          do
+            echo "尝试删除缓存: $key"
+            gh cache delete "$key" --repo ${{ github.repository }} || echo "缓存 $key 不存在，跳过"
+          done
 
       - name: 保存本仓库哈希缓存
         uses: actions/cache@v4
