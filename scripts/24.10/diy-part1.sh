@@ -19,7 +19,7 @@ rm -rf feeds/packages/lang/rust
 # 添加 OpenClash 官方源
 git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/luci-app-openclash
 
-# iStore商店
+# iStore 商店
 git clone https://github.com/linkease/istore.git package/istore
 git clone https://github.com/linkease/luci-app-store.git package/luci-app-store
 
