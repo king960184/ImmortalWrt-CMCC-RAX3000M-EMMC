@@ -24,7 +24,7 @@ git clone https://github.com/linkease/istore.git package/istore
 git clone https://github.com/linkease/luci-app-store.git package/luci-app-store
 
 # 快速启动向导
-git clone https://github.com/kenzok8/openwrt-packages.git package/openwrt-packages
+git clone https://github.com/kenzok8/small.git package/openwrt-packages
 cp -rf package/openwrt-packages/luci-app-quickstart package/
 cp -rf package/openwrt-packages/luci-i18n-quickstart-zh-cn package/
 rm -rf package/openwrt-packages
