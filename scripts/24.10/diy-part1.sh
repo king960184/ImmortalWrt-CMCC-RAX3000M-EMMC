@@ -19,15 +19,25 @@ rm -rf feeds/packages/lang/rust
 # 添加 OpenClash 官方源
 git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/luci-app-openclash
 
-# iStore 商店
-git clone https://github.com/linkease/istore.git package/istore
-git clone https://github.com/linkease/luci-app-store.git package/luci-app-store
+#!/bin/bash
+# 拉取指定commit的openwrt-24.10源码
+git checkout openwrt-24.10
+git reset --hard 7ab5f9d
+git pull
 
-# 快速启动向导
-git clone https://github.com/kenzok8/small.git package/openwrt-packages
-cp -rf package/openwrt-packages/luci-app-quickstart package/
-cp -rf package/openwrt-packages/luci-i18n-quickstart-zh-cn package/
-rm -rf package/openwrt-packages
+# 更新feeds
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# 添加插件源（iStore+AdGuardHome+快启+易有云）
+sed -i '$a src-git istore https://github.com/linkease/istore-packages.git;main' feeds.conf.default
+sed -i '$a src-git passwall https://github.com/xiaorouji/openwrt-passwall-packages.git;main' feeds.conf.default
+sed -i '$a src-git adguardhome https://github.com/rufengsuixing/luci-app-adguardhome.git' feeds.conf.default
+sed -i '$a src-git quickstart https://github.com/kenzok8/openwrt-packages.git' feeds.conf.default
+
+./scripts/feeds update -a
+./scripts/feeds install -a
+
 
 # 修正权限
 # 确保脚本在编译前有正确的执行权限
